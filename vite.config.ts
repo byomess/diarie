@@ -16,7 +16,7 @@ export default defineConfig({
         name: 'Diariê', // Nome completo do app
         short_name: 'Diariê', // Nome curto (para ícones)
         description: 'Suas tarefas, organizadas com estilo.', // Descrição
-        theme_color: '#374151', // Cor principal da UI do navegador/OS (combine com PRIMARY_APP_COLOR)
+        theme_color: '#bd92e8', // Cor principal da UI do navegador/OS (combine com PRIMARY_APP_COLOR)
         background_color: '#ffffff', // Cor de fundo da splash screen
         display: 'standalone', // Abre como um app separado, sem a barra do navegador
         scope: '/', // Escopo de navegação do PWA
