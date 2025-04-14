@@ -11,11 +11,16 @@ const PRIMARY_APP_COLOR = '#bd92e8';
 const PRIMARY_APP_HOVER_COLOR = '#a67ed1'; // Slightly darker hover for the primary color
 const TEXT_PRIMARY = '#374151';
 const TEXT_SECONDARY = '#6B7280';
-const BORDER_DONE_COLOR = '#E5E7EB';
 const BACKGROUND_GRADIENT_FROM = 'from-purple-100'; // Adjusted gradient
-const BACKGROUND_VIA = 'via-white'; // Adjusted gradient
+const BACKGROUND_VIA = 'via-amber-100/20'; // Adjusted gradient
 const BACKGROUND_GRADIENT_TO = 'to-blue-100'; // Adjusted gradient
+
 const BORDER_COLOR_DEFAULT = 'border-gray-200';
+const BORDER_DONE_COLOR = '#E5E7EB';
+const RING_FOCUS_COLOR_PRIMARY = 'focus:ring-purple-200';
+const RING_FOCUS_COLOR_SECONDARY = 'focus:ring-gray-400';
+const RING_FOCUS_SIZE = 'focus:ring-2';
+const BORDER_FOCUS_COLOR_PRIMARY = 'focus:border-purple-500';
 
 const LOCAL_STORAGE_TASKS_KEY = 'tasks_v1';
 
@@ -202,7 +207,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, accentColor, t
 
   return (
     <div
-      className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all duration-200 ease-in-out flex-shrink-0 cursor-pointer`}
+      className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all duration-200 ease-in-out flex-shrink-0 cursor-pointer ml-[2px]`}
       style={{
         backgroundColor: bgColor,
         borderColor: borderColor,
@@ -354,7 +359,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
               id="taskTitle"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className={`w-full px-4 py-2.5 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none focus:ring-2 focus:ring-[${selectedColor.accentColorHex}]/50 focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
+              className={`w-full px-4 py-2.5 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
               style={{ color: TEXT_PRIMARY }}
               placeholder="Ex: Comprar chá e biscoitos"
               required
@@ -370,7 +375,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
                 id="taskDate"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className={`w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[${selectedColor.accentColorHex}]/50 focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
+                className={`w-full px-4 py-2.5 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
                 style={{ color: TEXT_PRIMARY }}
                 required
               />
@@ -384,7 +389,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
                 id="taskTime"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                className={`w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[${selectedColor.accentColorHex}]/50 focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
+                className={`w-full px-4 py-2.5 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
                 style={{ color: TEXT_PRIMARY }}
               />
             </div>
@@ -399,7 +404,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
                   <button
                     key={color.accentColorHex}
                     type="button"
-                    className={`w-7 h-7 rounded-full border-2 flex-shrink-0 transition-transform transform hover:scale-110 focus:outline-none ${selectedColor.accentColorHex === color.accentColorHex ? 'ring-2 ring-offset-2 ring-gray-500 border-white' : 'border-gray-200 hover:border-gray-400'}`}
+                    className={`w-7 h-7 rounded-full border-2 flex-shrink-0 transition-transform transform hover:scale-110 focus:outline-none border-gray-100 ${selectedColor.accentColorHex === color.accentColorHex ? `${RING_FOCUS_SIZE} ring-offset-2 ${RING_FOCUS_COLOR_SECONDARY}` : ' hover:border-gray-400'}`}
                     style={{ backgroundColor: color.accentColorHex }}
                     onClick={() => handleSuggestionClick(color)}
                     aria-label={`Selecionar cor ${color.accentColorHex}`}
@@ -408,7 +413,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
               </div>
             </div>
           </div>
-          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 mt-6">
+          <div className={`flex justify-end space-x-3 pt-4 border-t ${BORDER_COLOR_DEFAULT} mt-6`}>
             <button
               type="button"
               onClick={onClose}
@@ -585,16 +590,16 @@ const MainScreen: React.FC = () => {
             placeholder="Buscar tarefa..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[${PRIMARY_APP_COLOR}]/50 focus:border-[${PRIMARY_APP_COLOR}] bg-white transition duration-150 ease-in-out`}
+            className={`w-full pl-12 pr-4 py-3 border ${BORDER_COLOR_DEFAULT} rounded-xl focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} ${BORDER_FOCUS_COLOR_PRIMARY} bg-white transition duration-150 ease-in-out`}
             style={{ color: TEXT_PRIMARY, '::placeholder': { color: TEXT_SECONDARY } } as React.CSSProperties}
           />
           <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={22} />
         </div>
 
         <main>
-          <section className="bg-white mb-8 overflow-hidden rounded-2xl border border-gray-200">
+          <section className={`bg-white mb-8 overflow-hidden rounded-2xl border ${BORDER_COLOR_DEFAULT}`}>
             {!searchTerm && (
-              <h2 className="text-lg font-semibold px-6 pt-5 pb-3 border-b border-gray-200" style={{ color: TEXT_PRIMARY }}>
+              <h2 className={`text-lg font-semibold px-6 pt-5 pb-3 border-b ${BORDER_COLOR_DEFAULT}`} style={{ color: TEXT_PRIMARY }}>
                 Tarefas
               </h2>
             )}
@@ -697,7 +702,7 @@ const MainScreen: React.FC = () => {
                             exit={{ opacity: 0, scale: 0.8, x: 10 }}
                             transition={{ duration: 0.15, ease: 'easeOut' }}
                             // Absolute positioning is key for overlap
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 flex space-x-1 bg-white p-1.5 rounded-lg border border-gray-200 shadow-md z-20"
+                            className={`absolute right-3 top-1/2 transform -translate-y-1/2 flex space-x-1 bg-white p-1.5 rounded-lg border ${BORDER_COLOR_DEFAULT} shadow-md z-20`}
                             onClick={(e) => e.stopPropagation()}
                           >
                             <button
