@@ -12,9 +12,9 @@ const PRIMARY_APP_HOVER_COLOR = '#a67ed1'; // Slightly darker hover for the prim
 const TEXT_PRIMARY = '#374151';
 const TEXT_SECONDARY = '#6B7280';
 const BORDER_DONE_COLOR = '#E5E7EB';
-const BACKGROUND_GRADIENT_FROM = 'from-purple-50'; // Adjusted gradient
+const BACKGROUND_GRADIENT_FROM = 'from-purple-100'; // Adjusted gradient
 const BACKGROUND_VIA = 'via-white'; // Adjusted gradient
-const BACKGROUND_GRADIENT_TO = 'to-blue-50'; // Adjusted gradient
+const BACKGROUND_GRADIENT_TO = 'to-blue-100'; // Adjusted gradient
 const BORDER_COLOR_DEFAULT = 'border-gray-200';
 
 const LOCAL_STORAGE_TASKS_KEY = 'tasks_v1';
@@ -553,6 +553,7 @@ const MainScreen: React.FC = () => {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br ${BACKGROUND_GRADIENT_FROM} ${BACKGROUND_VIA} ${BACKGROUND_GRADIENT_TO} font-sans relative pb-32 overflow-x-hidden`} onContextMenu={handleContextMenu}>
+      {/* <div className={`min-h-screen bg-gradient-to-br ${BACKGROUND_GRADIENT_FROM} ${BACKGROUND_VIA} ${BACKGROUND_GRADIENT_TO} font-sans relative pb-32 overflow-x-hidden`} onContextMenu={handleContextMenu}></div> */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="flex items-center justify-center pt-10 pb-8">
           {/* <h1 className="text-4xl font-bold tracking-tight" style={{ color: PRIMARY_APP_COLOR, fontFamily: "'Palatino Linotype', 'Book Antiqua', Palatino, serif" }}>
