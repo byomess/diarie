@@ -6,6 +6,7 @@ import useLocalStorage from './hooks/useLocalStorage';
 
 import logoIcon from './assets/diarie_logo_icon.png';
 import logoText from './assets/diarie_logo_text.png';
+import { useSounds } from './hooks/useSounds';
 
 const PRIMARY_APP_COLOR = '#bd92e8';
 const PRIMARY_APP_HOVER_COLOR = '#a67ed1'; // Slightly darker hover for the primary color
@@ -96,6 +97,7 @@ interface UiContextType {
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { playSound } = useSounds(true);
   const today = getTodayDateString();
   const [tasks, setTasks] = useLocalStorage<Task[]>(LOCAL_STORAGE_TASKS_KEY, [
     { id: 1, title: 'Trocar areia dos gatos', time: '08:00', date: today, ...pastelSuggestionPalette[0], done: false },
@@ -106,6 +108,7 @@ const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   ]);
 
   const addTask = (title: string, time: string, date: string, color: { accentColorHex: string; darkTextColorHex: string }) => {
+    playSound('createTask');
     const newTask: Task = {
       id: Date.now(),
       title,
@@ -120,13 +123,21 @@ const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const toggleTaskDone = (id: number) => {
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
+      prev.map((task) => {
+        if (task.id === id) {
+          playSound(task.done ? 'taskUndone' : 'taskDone');
+          return {
+            ...task,
+            done: !task.done,
+          };
+        }
+        return task;
+      })
     );
   };
 
   const editTask = (id: number, title: string, time: string, date: string, color?: { accentColorHex: string; darkTextColorHex: string }) => {
+    playSound('createTask');
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id ? {
@@ -142,10 +153,12 @@ const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const removeTask = (id: number) => {
+    playSound('deleteTask');
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
   const reorderTasks = (id: number, direction: 'up' | 'down') => {
+    playSound('reorderTask');
     setTasks((prevTasks) => {
       const index = prevTasks.findIndex(task => task.id === id);
       if (index === -1) return prevTasks; // Task not found
@@ -275,6 +288,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
   );
   const modalContentRef = useRef<HTMLDivElement>(null);
 
+  const { playSound } = useSounds(true);
+
   useEffect(() => {
     if (isOpen) {
       if (initialData) {
@@ -312,7 +327,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
     e.preventDefault();
     if (title.trim()) {
       onSubmit(title, time, date, selectedColor);
-      onClose();
+      // onClose();
     } else {
       alert("O título da tarefa não pode estar vazio!");
     }
@@ -362,6 +377,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
               className={`w-full px-4 py-2.5 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
               style={{ color: TEXT_PRIMARY }}
               placeholder="Ex: Comprar chá e biscoitos"
+              onFocus={() => playSound('focus')}
               required
             />
           </div>
@@ -377,6 +393,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
                 onChange={(e) => setDate(e.target.value)}
                 className={`w-full px-4 py-2.5 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
                 style={{ color: TEXT_PRIMARY }}
+                onFocus={() => playSound('focus')}
                 required
               />
             </div>
@@ -391,6 +408,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
                 onChange={(e) => setTime(e.target.value)}
                 className={`w-full px-4 py-2.5 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
                 style={{ color: TEXT_PRIMARY }}
+                onFocus={() => playSound('focus')}
               />
             </div>
           </div>
@@ -408,6 +426,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
                     style={{ backgroundColor: color.accentColorHex }}
                     onClick={() => handleSuggestionClick(color)}
                     aria-label={`Selecionar cor ${color.accentColorHex}`}
+                    onFocus={() => playSound('focus')}
                   />
                 ))}
               </div>
@@ -445,22 +464,27 @@ const MainScreen: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
+  const { playSound } = useSounds(true);
+
   const activeColor = PRIMARY_APP_COLOR;
   const inactiveColor = '#A0AEC0';
 
   const handleOpenModalForAdd = () => {
+    playSound('modalOpen');
     setEditingTask(null);
     setShowActionsTaskId(null);
     setIsModalOpen(true);
   };
 
   const handleOpenModalForEdit = (task: Task) => {
+    playSound('modalOpen');
     setEditingTask(task);
     setShowActionsTaskId(null);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
+    playSound('modalClose');
     setIsModalOpen(false);
     setEditingTask(null);
   };
@@ -471,15 +495,17 @@ const MainScreen: React.FC = () => {
     } else {
       addTask(title, time, date, color);
     }
-    handleCloseModal();
+    setTimeout(() => handleCloseModal(), 500);
   };
 
   const handleDeleteTask = (id: number) => {
+    playSound('deleteTask');
     removeTask(id);
     setShowActionsTaskId(null);
   };
 
   const handleReorderTask = (taskId: number, direction: 'up' | 'down') => {
+    playSound('reorderTask');
     reorderTasks(taskId, direction);
     // Keep the action menu open for the moved item
     // setShowActionsTaskId(null); // Optional: close menu after reorder
@@ -592,6 +618,7 @@ const MainScreen: React.FC = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className={`w-full pl-12 pr-4 py-3 border ${BORDER_COLOR_DEFAULT} rounded-xl focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} ${BORDER_FOCUS_COLOR_PRIMARY} bg-white transition duration-150 ease-in-out`}
             style={{ color: TEXT_PRIMARY, '::placeholder': { color: TEXT_SECONDARY } } as React.CSSProperties}
+            onFocus={() => playSound('focus')}
           />
           <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={22} />
         </div>
