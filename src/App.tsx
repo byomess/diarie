@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from 'react';
 import { FiHome, FiCheckSquare, FiSearch, FiSquare, FiPlus, FiTrash, FiEdit, FiX, FiArrowUp, FiArrowDown } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+
 import useLocalStorage from './hooks/useLocalStorage';
+
+import logoIcon from './assets/diarie_logo_icon.png';
+import logoText from './assets/diarie_logo_text.png';
 
 const PRIMARY_APP_COLOR = '#bd92e8';
 const PRIMARY_APP_HOVER_COLOR = '#a67ed1'; // Slightly darker hover for the primary color
@@ -31,17 +35,17 @@ const getContrastingTextColor = (hexColor: string): string => {
     hexColor = hexColor.split('').map(char => char + char).join('');
   }
   if (hexColor.length !== 6) {
-      return '#374151';
+    return '#374151';
   }
   try {
-      const r = parseInt(hexColor.substring(0, 2), 16);
-      const g = parseInt(hexColor.substring(2, 4), 16);
-      const b = parseInt(hexColor.substring(4, 6), 16);
-      const luminance = (r * 299 + g * 587 + b * 114) / 1000;
-      return luminance > 140 ? '#374151' : '#FFFFFF';
+    const r = parseInt(hexColor.substring(0, 2), 16);
+    const g = parseInt(hexColor.substring(2, 4), 16);
+    const b = parseInt(hexColor.substring(4, 6), 16);
+    const luminance = (r * 299 + g * 587 + b * 114) / 1000;
+    return luminance > 140 ? '#374151' : '#FFFFFF';
   } catch (e) {
-      console.error("Error parsing hex color:", hexColor, e);
-      return '#374151';
+    console.error("Error parsing hex color:", hexColor, e);
+    return '#374151';
   }
 };
 
@@ -121,13 +125,13 @@ const TaskProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id ? {
-            ...task,
-            title,
-            time,
-            date,
-            accentColorHex: color ? color.accentColorHex : task.accentColorHex,
-            darkTextColorHex: color ? color.darkTextColorHex : task.darkTextColorHex,
-         } : task
+          ...task,
+          title,
+          time,
+          date,
+          accentColorHex: color ? color.accentColorHex : task.accentColorHex,
+          darkTextColorHex: color ? color.darkTextColorHex : task.darkTextColorHex,
+        } : task
       )
     );
   };
@@ -341,7 +345,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
           </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
+          <div>
             <label htmlFor="taskTitle" className="block text-sm font-medium text-gray-600 mb-1">
               Título da Tarefa <span className="text-red-400">*</span>
             </label>
@@ -355,7 +359,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
               placeholder="Ex: Comprar chá e biscoitos"
               required
             />
-            </div>
+          </div>
           <div className='flex flex-col sm:flex-row sm:space-x-4 space-y-5 sm:space-y-0'>
             <div className="flex-1">
               <label htmlFor="taskDate" className="block text-sm font-medium text-gray-600 mb-1">
@@ -376,12 +380,12 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
                 Horário <span className='text-gray-400 text-xs'>(Opcional)</span>
               </label>
               <input
-                 type="time"
-                 id="taskTime"
-                 value={time}
-                 onChange={(e) => setTime(e.target.value)}
-                 className={`w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[${selectedColor.accentColorHex}]/50 focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
-                 style={{ color: TEXT_PRIMARY }}
+                type="time"
+                id="taskTime"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                className={`w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[${selectedColor.accentColorHex}]/50 focus:border-[${selectedColor.accentColorHex}] transition duration-150 ease-in-out`}
+                style={{ color: TEXT_PRIMARY }}
               />
             </div>
           </div>
@@ -390,18 +394,18 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSubmit, initia
               Cor da Tarefa
             </label>
             <div className="overflow-x-auto pb-2 -mb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-thumb-rounded-full">
-                 <div className="flex items-center space-x-2 py-1 w-max pr-2">
-                    {pastelSuggestionPalette.map((color) => (
-                    <button
-                        key={color.accentColorHex}
-                        type="button"
-                        className={`w-7 h-7 rounded-full border-2 flex-shrink-0 transition-transform transform hover:scale-110 focus:outline-none ${selectedColor.accentColorHex === color.accentColorHex ? 'ring-2 ring-offset-2 ring-gray-500 border-white' : 'border-gray-200 hover:border-gray-400'}`}
-                        style={{ backgroundColor: color.accentColorHex }}
-                        onClick={() => handleSuggestionClick(color)}
-                        aria-label={`Selecionar cor ${color.accentColorHex}`}
-                    />
-                    ))}
-                </div>
+              <div className="flex items-center space-x-2 py-1 w-max pr-2">
+                {pastelSuggestionPalette.map((color) => (
+                  <button
+                    key={color.accentColorHex}
+                    type="button"
+                    className={`w-7 h-7 rounded-full border-2 flex-shrink-0 transition-transform transform hover:scale-110 focus:outline-none ${selectedColor.accentColorHex === color.accentColorHex ? 'ring-2 ring-offset-2 ring-gray-500 border-white' : 'border-gray-200 hover:border-gray-400'}`}
+                    style={{ backgroundColor: color.accentColorHex }}
+                    onClick={() => handleSuggestionClick(color)}
+                    aria-label={`Selecionar cor ${color.accentColorHex}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
           <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 mt-6">
@@ -501,9 +505,9 @@ const MainScreen: React.FC = () => {
       toggleTaskDone(task.id);
       setShowActionsTaskId(null);
     } else if (showActionsTaskId === task.id) {
-       setShowActionsTaskId(null);
+      setShowActionsTaskId(null);
     } else {
-        toggleTaskDone(task.id);
+      toggleTaskDone(task.id);
     }
   };
 
@@ -514,7 +518,7 @@ const MainScreen: React.FC = () => {
     }
   };
 
-   const handleContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
   }
 
@@ -550,10 +554,26 @@ const MainScreen: React.FC = () => {
   return (
     <div className={`min-h-screen bg-gradient-to-br ${BACKGROUND_GRADIENT_FROM} ${BACKGROUND_VIA} ${BACKGROUND_GRADIENT_TO} font-sans relative pb-32 overflow-x-hidden`} onContextMenu={handleContextMenu}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center pt-10 pb-8">
-          <h1 className="text-4xl font-bold tracking-tight" style={{ color: PRIMARY_APP_COLOR, fontFamily: "'Palatino Linotype', 'Book Antiqua', Palatino, serif" }}>
+        <header className="flex items-center justify-center pt-10 pb-8">
+          {/* <h1 className="text-4xl font-bold tracking-tight" style={{ color: PRIMARY_APP_COLOR, fontFamily: "'Palatino Linotype', 'Book Antiqua', Palatino, serif" }}>
             Diariê
-          </h1>
+          </h1> */}
+          <div className="flex items-center space-x-2">
+            <img
+              src={logoIcon}
+              alt="Logo Ícone Diariê"
+              className="w-[64px] mx-auto mb-2"
+              width={128}
+              height={128}
+            />
+            <img
+              src={logoText}
+              alt="Logo Texto Diariê"
+              className="w-32 mx-auto mb-2"
+            // style={{ filter: `drop-shadow(0 0 10px ${PRIMARY_APP_COLOR})` }}
+            />
+
+          </div>
           {/* <p className="text-lg mt-1" style={{color: TEXT_SECONDARY}}>Suas tarefas, em tons suaves.</p> */}
         </header>
 
@@ -573,17 +593,17 @@ const MainScreen: React.FC = () => {
         <main>
           <section className="bg-white mb-8 overflow-hidden rounded-2xl border border-gray-200">
             {!searchTerm && (
-              <h2 className="text-lg font-semibold px-6 pt-5 pb-3 border-b border-gray-200" style={{color: TEXT_PRIMARY}}>
+              <h2 className="text-lg font-semibold px-6 pt-5 pb-3 border-b border-gray-200" style={{ color: TEXT_PRIMARY }}>
                 Tarefas
               </h2>
             )}
-             {/* Use Reorder.Group for the list */}
-             {/* Note: Reorder typically works best with drag-and-drop, but we'll use buttons */}
-             {/* We still use AnimatePresence for add/remove animations */}
+            {/* Use Reorder.Group for the list */}
+            {/* Note: Reorder typically works best with drag-and-drop, but we'll use buttons */}
+            {/* We still use AnimatePresence for add/remove animations */}
             <AnimatePresence initial={false}>
               <div className="divide-y divide-gray-100">
                 {filteredTasks.length === 0 ? (
-                  <p className="text-center py-10 px-6" style={{color: TEXT_SECONDARY}}>
+                  <p className="text-center py-10 px-6" style={{ color: TEXT_SECONDARY }}>
                     {tasks.length > 0 ? 'Nenhuma tarefa encontrada com sua busca.' : 'Você ainda não tem tarefas. Que tal adicionar uma?'}
                   </p>
                 ) : filteredTasks.map((task, index) => {
@@ -595,9 +615,9 @@ const MainScreen: React.FC = () => {
                     if (task.done) return doneBgColor;
                     if (showActionsTaskId === task.id) return activeBgColor;
                     try {
-                        if (/^#[0-9A-F]{6}$/i.test(task.accentColorHex)) {
-                           return task.accentColorHex + lightAccentAlpha;
-                        }
+                      if (/^#[0-9A-F]{6}$/i.test(task.accentColorHex)) {
+                        return task.accentColorHex + lightAccentAlpha;
+                      }
                     } catch { /* ignore */ }
                     return '#FFFFFF' + lightAccentAlpha;
                   };
@@ -636,9 +656,9 @@ const MainScreen: React.FC = () => {
                       {/* Content Area - No conditional margin/padding */}
                       <div className="flex items-center space-x-4 flex-grow overflow-hidden">
                         <CustomCheckbox
-                            checked={task.done}
-                            accentColor={task.accentColorHex}
-                            textColor={checkTextColor}
+                          checked={task.done}
+                          accentColor={task.accentColorHex}
+                          textColor={checkTextColor}
                         />
                         <div className="flex-1 min-w-0"> {/* Allow text container to shrink/grow */}
                           <p
@@ -652,9 +672,9 @@ const MainScreen: React.FC = () => {
                               <p
                                 className={`text-xs ${task.done ? 'line-through' : ''}`}
                                 style={{
-                                    color: dateTimeColor,
-                                    opacity: task.done ? 0.7 : 0.9,
-                                    textDecorationColor: task.done ? BORDER_DONE_COLOR : 'transparent'
+                                  color: dateTimeColor,
+                                  opacity: task.done ? 0.7 : 0.9,
+                                  textDecorationColor: task.done ? BORDER_DONE_COLOR : 'transparent'
                                 }}
                               >
                                 {task.date && formatDateDisplay(task.date)}
@@ -665,7 +685,7 @@ const MainScreen: React.FC = () => {
                           )}
                         </div>
                       </div>
-                
+
                       {/* Actions Menu - Positioned absolutely to overlap */}
                       <AnimatePresence>
                         {showActionsTaskId === task.id && (
@@ -693,7 +713,7 @@ const MainScreen: React.FC = () => {
                               aria-label="Mover para baixo"
                               title="Mover para baixo"
                             > <FiArrowDown size={18} /> </button>
-                             <div className="w-px h-6 bg-gray-200 mx-1"></div> {/* Separator */}
+                            <div className="w-px h-6 bg-gray-200 mx-1"></div> {/* Separator */}
                             <button
                               onClick={() => handleOpenModalForEdit(task)}
                               className="p-2 text-blue-500 hover:text-blue-700 rounded-md hover:bg-blue-50 transition-colors"
