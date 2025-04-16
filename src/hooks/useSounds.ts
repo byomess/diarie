@@ -12,6 +12,7 @@ const soundMap = {
     modalOpen: new Howl({ src: ['/sounds/modal_open.ogg', '/sounds/modal_open.wav'], volume: 0.7 }),
     modalClose: new Howl({ src: ['/sounds/modal_close.ogg', '/sounds/modal_close.wav'], volume: 0.7 }),
     focus: new Howl({ src: ['/sounds/focus.ogg', '/sounds/focus.wav'], volume: 0.7 }),
+    navigation: new Howl({ src: ['/sounds/navigation.ogg', '/sounds/navigation.mp3'], volume: 0.7 }),
 
     // buttonPress: new Howl({ src: ['/sounds/small_beep.ogg', '/sounds/small_beep.wav'], volume: 0.7 }),
     // typing: new Howl({ src: ['/sounds/typing.wav', '/sounds/typing.mp3'], volume: 0.4 }),
