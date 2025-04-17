@@ -12,6 +12,7 @@ import logoText from './assets/diarie_logo_text.png';
 
 // --- Constantes ---
 const PRIMARY_APP_COLOR = '#bd92e8';
+// const PRIMARY_APP_ACCENT_COLOR = '#9b6de0';
 const PRIMARY_APP_HOVER_COLOR = '#a67ed1';
 const TEXT_PRIMARY = '#374151'; // gray-700
 const TEXT_SECONDARY = '#6B7280'; // gray-500
@@ -906,7 +907,9 @@ const MainScreen: React.FC = () => {
   // --- Renderização Principal ---
   return (
     <div className={`min-h-screen bg-gradient-to-br ${BACKGROUND_GRADIENT_FROM} ${BACKGROUND_VIA} ${BACKGROUND_GRADIENT_TO} font-sans relative pb-32 overflow-x-hidden`}>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={`absolute bg-purple-400/50 shadow-lg rounded-b-2xl w-full h-48 top-0 left-0 -z-10 ${currentBottomTab === 'home' ? 'hidden' : ''}`} />
+
         {/* Cabeçalho */}
         <header className="flex items-center justify-center pt-10 pb-8">
           <div className="flex items-center space-x-2">
@@ -916,7 +919,7 @@ const MainScreen: React.FC = () => {
         </header>
 
         {/* Busca */}
-        <div className="mb-4 relative">
+        <div className="mb-8 relative">
           <input ref={searchInputRef} type="text" placeholder="Buscar tarefa..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
             className={`w-full text-sm pl-12 pr-4 py-2 border ${BORDER_COLOR_DEFAULT} rounded-lg focus:outline-none ${RING_FOCUS_SIZE} ${RING_FOCUS_COLOR_PRIMARY} ${BORDER_FOCUS_COLOR_PRIMARY} bg-white transition duration-150 ease-in-out`}
             style={{ color: TEXT_PRIMARY, '::placeholder': { color: TEXT_SECONDARY } } as React.CSSProperties} onFocus={() => playSound('focus')}
@@ -1009,7 +1012,7 @@ const MainScreen: React.FC = () => {
         </div>
 
         {/* Navegação Inferior */}
-        <nav className={`fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t ${BORDER_COLOR_DEFAULT} z-10`}>
+        <nav className={`fixed bottom-0 left-0 right-0 bg-white/90 rounded-t-2xl backdrop-blur-sm border-t ${BORDER_COLOR_DEFAULT} z-10`}>
           <div className="max-w-md mx-auto flex justify-around items-center h-16">
             {[{ name: 'Home', icon: FiHome }, { name: 'Tasks', icon: FiCheckSquare }, { name: 'Search', icon: FiSearch }, { name: 'Calendar', icon: FiSquare }]
               .map((item) => (
